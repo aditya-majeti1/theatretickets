@@ -1,0 +1,280 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "My Theatre Tickets"
+    },
+    "host": "localhost:3001",
+    "basePath": "/api",
+    "tags": [{
+        "name": "Tickets",
+        "description": "API for Tickets in the system"
+    }],
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
+    "securityDefinitions": {
+        "authorization": {
+            "type": "apiKey",
+            "name": "authorization",
+            "in": "header"
+        }
+    },
+    "paths": {
+        "/tickets": {
+            "post": {
+                "tags": ["Tickets"],
+                "summary": "Create new Ticket",
+                "security": [{
+                    "authorization": []
+                }],
+                "parameters": [{
+                    "name": "Ticket",
+                    "in": "body",
+                    "description": "Ticket that we want to create",
+                    "schema": {
+                        "$ref": "#/definitions/AddTicket"
+                    }
+                }],
+                "produces": ["application/json"],
+                "responses": {
+                    "200": {
+                        "description": "New Ticket is created",
+                        "schema": {
+                            "$ref": "#/definitions/Ticket"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Tickets"],
+                "summary": "Get all Tickets",
+                "security": [{
+                    "authorization": []
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Tickets"
+                        }
+                    }
+                }
+            }
+        },
+        "/tickets/{id}": {
+            "parameters": [{
+                "name": "id",
+                "in": "path",
+                "required": true,
+                "description": "ID of ticket that we want to find",
+                "type": "string"
+            }],
+            "get": {
+                "summary": "Get ticket with given ID",
+                "security": [{
+                    "authorization": []
+                }],
+                "tags": ["Tickets"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/Ticket"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update ticket with give ID",
+                "security": [{
+                    "authorization": []
+                }],
+                "tags": ["Tickets"],
+                "parameters": [{
+                    "name": "ticket",
+                    "in": "body",
+                    "description": "Ticket with new values of properties",
+                    "schema": {
+                        "$ref": "#/definitions/Ticket"
+                    }
+                }],
+                "responses": {
+                    "200": {
+                        "description": "Ticket is updated",
+                        "schema": {
+                            "$ref": "#/definitions/Ticket"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete ticket with given ID",
+                "security": [{
+                    "authorization": []
+                }],
+                "tags": ["Tickets"],
+                "responses": {
+                    "200": {
+                        "description": "Ticket is deleted",
+                        "schema": {
+                            "$ref": "#/definitions/Ticket"
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/earned": {
+            "get": {
+                "tags": ["Analytics"],
+                "summary": "Get earned analytics on tickets",
+                "security": [{
+                    "authorization": []
+                }],
+                "parameters": [{
+                    "name": "method",
+                    "in": "query",
+                    "required": true,
+                    "description": "method of ticket that we want to find",
+                    "type": "string"
+                }, {
+                    "name": "fromDate",
+                    "in": "query",
+                    "required": true,
+                    "description": "fromDate of ticket that we want to find",
+                    "type": "string"
+                }, {
+                    "name": "toDate",
+                    "in": "query",
+                    "required": true,
+                    "description": "toDate of ticket that we want to find",
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/SummaryProfit"
+                        }
+                    }
+                }
+            }
+        },
+        "/analytics/visited": {
+            "get": {
+                "tags": ["Analytics"],
+                "summary": "Get visited analytics on tickets",
+                "security": [{
+                    "authorization": []
+                }],
+                "parameters": [{
+                    "name": "method",
+                    "in": "query",
+                    "required": true,
+                    "description": "method of ticket that we want to find",
+                    "type": "string"
+                }, {
+                    "name": "fromDate",
+                    "in": "query",
+                    "required": true,
+                    "description": "fromDate of ticket that we want to find",
+                    "type": "string"
+                }, {
+                    "name": "toDate",
+                    "in": "query",
+                    "required": true,
+                    "description": "toDate of ticket that we want to find",
+                    "type": "string"
+                }],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/summaryVisits"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "AddTicket": {
+            "required": ["customerName",  "performanceTitle", "performanceTime", "ticketPrice", "creationDate"],
+            "properties": {
+                "customerName": {
+                    "type": "string"
+                },
+                "performanceTitle": {
+                    "type": "string"
+                },
+                "performanceTime": {
+                    "type": "string"
+                },
+                "ticketPrice": {
+                    "type": "string"
+                },
+                "creationDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "Ticket": {
+            "required": ["_id", "customerName",  "performanceTitle", "performanceTime", "ticketPrice", "creationDate"],
+            "properties": {
+                "_id": {
+                    "type": "integer",
+                    "uniqueItems": true
+                },
+                "customerName": {
+                    "type": "string"
+                },
+                "performanceTitle": {
+                    "type": "string"
+                },
+                "performanceTime": {
+                    "type": "string"
+                },
+                "ticketPrice": {
+                    "type": "string"
+                },
+                "creationDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "Tickets": {
+            "type": "array",
+            "$ref": "#/definitions/Ticket"
+        },
+        "SummaryProfits": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["month",  "summaryProfit"],
+                "properties": {
+                    "month": {
+                        "type": "string"
+                    },
+                    "summaryProfit": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "summaryVisits": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["month",  "summaryVisits"],
+                "properties": {
+                    "month": {
+                        "type": "string"
+                    },
+                    "summaryVisits": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
